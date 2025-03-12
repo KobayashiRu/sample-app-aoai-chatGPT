@@ -16,6 +16,8 @@ import { parseAnswer } from './AnswerParser'
 
 import styles from './Answer.module.css'
 
+import { Button } from '@fluentui/react';
+
 interface Props {
   answer: AskResponse
   onCitationClicked: (citedDocument: Citation) => void
@@ -30,6 +32,11 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
     if (Object.values(Feedback).includes(answer.feedback)) return answer.feedback
     return Feedback.Neutral
   }
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(parsedAnswer?.markdownFormatText || '');
+    alert('Copied to clipboard!');
+  };
 
   const [isRefAccordionOpen, { toggle: toggleIsRefAccordionOpen }] = useBoolean(false)
   const filePathTruncationLimit = 50
@@ -370,6 +377,7 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
             })}
           </div>
         )}
+        <Button onClick={copyToClipboard}>Copy</Button>
       </Stack>
       <Dialog
         onDismiss={() => {
@@ -410,5 +418,5 @@ export const Answer = ({ answer, onCitationClicked, onExectResultClicked }: Prop
         </Stack>
       </Dialog>
     </>
-  )
+  );
 }
